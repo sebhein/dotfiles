@@ -32,6 +32,5 @@ Host <name>
   - move `coc-settings.json` to `~/.vim/`
 
 ## NVIM
-  - [Install NeoVim](https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu) -> install unstable, treesitter requires nvim v0.8 and higher
   - move `.config/nvim/init.vim` to home directory
   - setup [vim-plug](https://github.com/junegunn/vim-plug)

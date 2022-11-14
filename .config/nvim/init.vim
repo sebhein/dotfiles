@@ -34,12 +34,21 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'ryanoasis/vim-devicons'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+"Plug 'puremourning/vimspector'
 
 call plug#end()
 
 " Theme
 " set termguicolors
 " colorscheme gotham
+
+" Disable mouse
+set mouse=
+
+" Use system clipboard
+" set clipboard+=unnamedplus
 
 " Disable the default Vim startup message.
 set shortmess+=I
@@ -78,7 +87,7 @@ inoremap <Right> <ESC>:echoe "Use l"<CR>
 inoremap <Up>    <ESC>:echoe "Use k"<CR>
 inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
-" navigate windows using CTRL-nav keys
+" navigate splits using CTRL-nav keys
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -140,7 +149,7 @@ autocmd WinEnter,InsertLeave *
 
 
 " Airline Theme
-let g:airline_theme='powerlineish'
+let g:airline_theme='luna'
 
 " Ctrl-F search
 map <C-f> :Grepper<CR>
@@ -200,6 +209,44 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
+" Telescope git actions
+nnoremap <leader>gd :lua require'telescope.builtin'.git_status{}<cr>
+
+" Reload all buffers
+noremap <Leader>rr :bufdo! e<CR>
+
+" Test current file in split
+function! TestCurrentFile()
+  let args = input('pytest args? ')
+  botright vsplit
+  vertical resize 120
+  if len(args) > 0
+    exe "term /home/ubuntu/repos/monorepo/pants test % -- ". args
+  else
+    exe "term /home/ubuntu/repos/monorepo/pants test %"
+  endif
+endfunction
+noremap <Leader>tt :exe TestCurrentFile()<cr>
+"noremap <Leader>tt <cmd>belowright split <bar> resize 10 <bar> term /home/ubuntu/repos/monorepo/pants test %<cr>
+
+" Start debug server in bottom bar
+function! StartDebug()
+  let args = input('pytest args? ')
+  botright split
+  resize 1
+  if len(args) > 0
+    exe "term /home/ubuntu/repos/monorepo/pants test --debug-adapter % -- ". args
+  else
+    exe "term /home/ubuntu/repos/monorepo/pants test --debug-adapter %"
+  endif
+  quit
+  " race condition here, can't start the debugger before adapter has finished
+  " loading up
+  "lua require'dap'.continue()
+endfunction
+noremap <Leader>sd :exe StartDebug()<cr>
+"noremap <Leader>sd <cmd>botright split <bar> resize 1 <bar> term /home/ubuntu/repos/monorepo/pants test --debug-adapter %<cr>
+
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   highlight = {
@@ -212,3 +259,96 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+" DAP Pants setup
+lua << EOF
+local dap = require('dap')
+dap.adapters.python = {
+  type = 'server';
+  port = 5678;
+}
+dap.configurations.python = {
+  {
+    -- The first three options are required by nvim-dap
+    type = 'python'; -- the type here established the link to the adapter definition: `dap.adapters.python`
+    request = 'launch';
+    name = "Launch file";
+    request = "attach";
+    justMyCode = false;
+  },
+}
+EOF
+
+" DAP actions
+nnoremap <silent> <Leader>dc <Cmd>lua require'dap'.continue()<CR>
+nnoremap <silent> <Leader><Right> <Cmd>lua require'dap'.step_over()<CR>
+nnoremap <silent> <Leader><Down> <Cmd>lua require'dap'.step_into()<CR>
+nnoremap <silent> <Leader><Up> <Cmd>lua require'dap'.step_out()<CR>
+nnoremap <Leader>du <Cmd>lua require'dapui'.toggle()<CR>
+
+" DAP UI
+lua << EOF
+require("dapui").setup({
+  icons = { expanded = "▸", collapsed = "+", current_frame = "->" },
+  mappings = {
+  -- Use a table to apply multiple mappings
+  expand = { "<CR>", "<2-LeftMouse>" },
+  open = "o",
+  remove = "d",
+  edit = "e",
+  repl = "r",
+  toggle = "t",
+  },
+  layouts = {
+    {
+        elements = {
+          "repl",
+          -- "console",
+          "scopes",
+          -- { id = "scopes", size = 0.75 },
+        },
+        size = 0.25,
+        position = "bottom",
+    },
+    {
+        elements = {
+          -- { id = "scopes", size = 0.25 },
+          -- "breakpoints",
+          "stacks",
+          -- "watches",
+        },
+      size = 40,
+      position = "left",
+    },
+  },
+  floating = {
+    max_height = nil, -- These can be integers or a float between 0 and 1.
+    max_width = nil, -- Floats will be treated as percentage of your screen.
+    border = "single", -- Border style. Can be "single", "double" or "rounded"
+    mappings = {
+      close = { "q", "<Esc>" },
+    },
+  },
+  windows = { indent = 1 },
+  render = {
+    max_type_length = nil, -- Can be integer or nil.
+    max_value_lines = 100, -- Can be integer or nil.
+  }
+})
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+EOF
+
+" prevent `wq` and `q` typos
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
+cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
