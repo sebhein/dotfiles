@@ -21,7 +21,7 @@ Host <name>
   - Add virutal box ssh keys to repo-manager, see [Github with SSH](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
   
   - (OPTIONAL) Start virtual box on startup
-    1. Go to `C:\Users\username\AppData\Roaming\Windows\Start Menu\Programs\Startup`
+    1. Go to `C:\Users\username\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup`
     2. Create new `*.bat` file
     3. Edit file with VM info i.e. `"C:\Program Files\Oracle\VirtualBox\VBoxmanage.exe" startvm "<VM Name>" --type "headless"`
 
