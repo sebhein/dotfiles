@@ -1,70 +1,42 @@
-local util = require('lspconfig.util')
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
-vim.api.nvim_create_user_command('Format', vim.lsp.buf.formatting_seq_sync, {})
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-vim.keymap.set('n', '<leader>ca', ':CodeActionMenu<CR>')
-vim.keymap.set('v', '<leader>ca', ':CodeActionMenu<CR>')
-vim.keymap.set('n', '<leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>')
-vim.keymap.set('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-vim.keymap.set('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true,  silent=true}
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', '<leader>d', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', '<leader>r', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+end
 
--- vim.lsp.set_log_level("debug")
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-vim.diagnostic.config({
-  virtual_text = false,
-  severity_sort = true,
-  float = {
-    source = true,
-    focus = false,
-    format = function(diagnostic)
-      if diagnostic.user_data ~= nil and diagnostic.user_data.lsp.code ~= nil then
-        return string.format('%s: %s', diagnostic.user_data.lsp.code, diagnostic.message)
-      end
-      return diagnostic.message
-    end,
-  },
-})
+--require'lspconfig'.jedi_language_server.setup{
+  --on_attach = on_attach,
+  --capabilities = capabilities,
+--}
 
-require('lspconfig').jedi_language_server.setup{}
-
---require('lspconfig').bashls.setup{}
-
---require('lspconfig').html.setup{}
-
---require('lspconfig').jsonls.setup({
-  --settings = {
-    --json = {
-      --schemas = require('schemastore').json.schemas(),
-    --},
-  --},
---})
-
---require('lspconfig').sqls.setup{}
-
---require('lspconfig').sumneko_lua.setup({
-  --cmd = { '/opt/lua-language-server/bin/lua-language-server' },
-  --settings = {
-    --Lua = {
-      --runtime = {
-        --version = 'LuaJIT',
-      --},
-      --diagnostics = {
-        ---- Get the language server to recognize the `vim` global
-        ---- ['undefined-global'] = false,
-        --globals = { 'vim' },
-      --},
-      --workspace = {
-        ---- Make the server aware of Neovim runtime files
-        --library = vim.api.nvim_get_runtime_file('', true),
-      --},
-      --telemetry = { enable = false },
-    --},
-  --},
---})
-
---require('lspconfig').tailwindcss.setup({})
-
-vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError' })
-vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo' })
-vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
+require'lspconfig'.pyright.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = function()
+    return vim.fn.getcwd()
+  end,
+}

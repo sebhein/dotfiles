@@ -60,26 +60,31 @@ use({
   end,
 })
 
---use({
-  --'neovim/nvim-lspconfig',
-  --requires = {
-    --'b0o/schemastore.nvim',
-    --'folke/lsp-colors.nvim',
-  --},
-  --config = function()
-    --require('user.plugins.lspconfig')
-  --end,
---})
+use({
+  'neovim/nvim-lspconfig',
+  requires = {
+    'b0o/schemastore.nvim',
+    'folke/lsp-colors.nvim',
+  },
+  config = function()
+    require('user.plugins.lspconfig')
+  end,
+})
 
---use({
-  --'hrsh7th/nvim-cmp',
-  --requires = {
-    --'hrsh7th/cmp-nvim-lsp',
-    --'hrsh7th/cmp-buffer',
-    --'hrsh7th/cmp-path',
-    --'hrsh7th/cmp-cmdline',
-  --},
---})
+use({
+  'hrsh7th/nvim-cmp',
+  requires = {
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/cmp-vsnip',
+    'hrsh7th/vim-vsnip',
+  },
+  config = function()
+    require('user.plugins.cmp')
+  end,
+})
 
 use('skwp/greplace.vim')
 
@@ -106,10 +111,13 @@ use({
   end,
 })
 
---use({
-  --'mfussenegger/nvim-dap',
-  --requires = 'rcarriga/nvim-dap-ui',
---})
+use({
+  'rcarriga/nvim-dap-ui',
+  requires = 'mfussenegger/nvim-dap',
+  config = function()
+    require('user.plugins.dapui')
+  end,
+})
 
 -- Automatically install plugins on first run
 if packer_bootstrap then
