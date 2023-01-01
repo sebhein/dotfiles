@@ -40,3 +40,13 @@ require'lspconfig'.pyright.setup{
     return vim.fn.getcwd()
   end,
 }
+
+require'lspconfig'.sumneko_lua.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+require'lspconfig'.rust_analyzer.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}

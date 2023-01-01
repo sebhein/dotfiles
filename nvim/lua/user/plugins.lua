@@ -119,6 +119,9 @@ use({
   end,
 })
 
+-- ColorSchemes
+use('EdenEast/nightfox.nvim')
+
 -- Automatically install plugins on first run
 if packer_bootstrap then
   require('packer').sync()
