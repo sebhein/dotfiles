@@ -119,6 +119,18 @@ use({
   end,
 })
 
+--use {
+  --'pwntester/octo.nvim',
+  --requires = {
+    --'nvim-lua/plenary.nvim',
+    --'nvim-telescope/telescope.nvim',
+    --'kyazdani42/nvim-web-devicons',
+  --},
+  --config = function ()
+    --require('user.plugins.octo')
+  --end
+--}
+
 -- ColorSchemes
 use('EdenEast/nightfox.nvim')
 

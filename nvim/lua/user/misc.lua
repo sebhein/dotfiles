@@ -3,9 +3,9 @@ local test_current_file = function ()
   vim.cmd('botright vsplit')
   vim.cmd('vertical resize 120')
   if #args > 0 then
-    vim.cmd('exe "term ' .. vim.env.REPO .. ' test % -- ' .. args .. '"')
+    vim.cmd('exe "term pants test % -- ' .. args .. '"')
   else
-    vim.cmd('exe "term ' .. vim.env.REPO .. ' test %"')
+    vim.cmd('exe "term pants test %"')
   end
 end
 

@@ -7,19 +7,18 @@ vim.keymap.set('n', '<leader><Up>', dap.step_out, {})
 vim.keymap.set('n', '<leader>du', dapui.toggle, {})
 
 -- Start the debugger
-local debug_test = function ()
+local debug_current_file = function ()
   local args = vim.fn.input('pytest args? ')
-  vim.cmd('botright split')
-  vim.cmd('resize 1')
+  vim.cmd('botright vsplit')
+  vim.cmd('vertical resize 120')
   if #args > 0 then
-    vim.cmd('exe "term ' .. vim.env.REPO .. ' test --debug-adapter % -- ' .. args .. '"')
+    vim.cmd('exe "term pants --loop  test --debug-adapter % -- ' .. args .. '"')
   else
-    vim.cmd('exe "term ' .. vim.env.REPO .. ' test --debug-adapter %"')
+    vim.cmd('exe "term pants --loop  test --debug-adapter %"')
   end
-  vim.cmd('quit')
 end
 
-vim.keymap.set('n', '<Leader>sd', debug_test, {})
+vim.keymap.set('n', '<Leader>sd', debug_current_file, {})
 
 -- DAP setup
 dap.adapters.python = {

@@ -19,7 +19,8 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>d', vim.lsp.buf.definition, bufopts)
   vim.keymap.set('n', '<leader>r', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>se', vim.diagnostic.open_float, bufopts)
+  --vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
   vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
@@ -33,18 +34,57 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
   --capabilities = capabilities,
 --}
 
-require'lspconfig'.pyright.setup{
+--require'lspconfig'.pyright.setup{
+  --on_attach = on_attach,
+  --capabilities = capabilities,
+  --root_dir = function()
+    --return vim.fn.getcwd()
+  --end,
+--}
+
+--require'lspconfig'.pylyzer.setup{
+  --on_attach = on_attach,
+  --capabilities = capabilities,
+  ----root_dir = function()
+    ----return vim.fn.getcwd()
+  ----end,
+--}
+
+require'lspconfig'.pylsp.setup{
   on_attach = on_attach,
   capabilities = capabilities,
   root_dir = function()
     return vim.fn.getcwd()
   end,
+  settings = {
+    configurationSources = {'flake8'},
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          enabled = false
+        },
+        mccabe = {
+          enabled = false
+        },
+        pyflakes = {
+          enabled = false
+        },
+        flake8 = {
+          enabled = true
+        },
+        black = {
+          enabled = true,
+          line_length = 120,
+        },
+      }
+    }
+  }
 }
 
-require'lspconfig'.sumneko_lua.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
+--require'lspconfig'.sumneko_lua.setup{
+  --on_attach = on_attach,
+  --capabilities = capabilities,
+--}
 
 require'lspconfig'.rust_analyzer.setup{
   on_attach = on_attach,
