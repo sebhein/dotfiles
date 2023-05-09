@@ -1,0 +1,9 @@
+[user]
+	email = git.seb@tuta.io
+	name = Seb Hein
+[core]
+	editor = vim
+[alias]
+  pbg = !git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads/ | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -D
+[fetch]
+  prune = true
