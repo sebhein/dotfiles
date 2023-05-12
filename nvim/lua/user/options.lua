@@ -11,8 +11,9 @@ vim.opt.title = true
 vim.opt.spell = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.opt.wrap = false
-vim.opt.list = true
+vim.opt.wrap = true
+vim.opt.list = false
+vim.opt.linebreak = true
 vim.opt.listchars = { tab = '▸ ', trail = '·'}
 vim.opt.splitbelow = true
 vim.opt.splitright = true
