@@ -24,4 +24,4 @@ vim.opt.shortmess:append({ I = true })  -- disable splash screen
 vim.opt.wildmode = 'longest:full,full'
 --vim.opt.signcolumn = 'yes:2'
 vim.opt.termguicolors = true
-vim.cmd('colorscheme carbonfox')
+vim.cmd('colorscheme tokyonight-night')

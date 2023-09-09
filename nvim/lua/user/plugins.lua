@@ -119,6 +119,14 @@ use({
   end,
 })
 
+use {
+  "sebhein/nvim-tron",
+  requires = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+  }
+}
+
 --use {
   --'pwntester/octo.nvim',
   --requires = {
@@ -130,9 +138,13 @@ use({
     --require('user.plugins.octo')
   --end
 --}
+--
 
 -- ColorSchemes
-use('EdenEast/nightfox.nvim')
+--use('EdenEast/nightfox.nvim')
+--use('marko-cerovac/material.nvim')
+use('folke/tokyonight.nvim')
+
 
 -- Automatically install plugins on first run
 if packer_bootstrap then
