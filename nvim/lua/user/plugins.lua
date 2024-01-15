@@ -71,6 +71,13 @@ use({
   end,
 })
 
+use {
+  "williamboman/mason.nvim",
+  config = function()
+    require('mason').setup()
+  end,
+}
+
 use({
   'hrsh7th/nvim-cmp',
   requires = {
@@ -119,31 +126,51 @@ use({
   end,
 })
 
+use({
+  'rcarriga/nvim-notify',
+  config = function()
+    require('user.plugins.nvim-notify')
+  end,
+})
+
 use {
-  "sebhein/nvim-tron",
+  'sebhein/nvim-tron',
+  --'/home/ubuntu/repos/nvim-tron',
   requires = {
-    "nvim-lua/plenary.nvim",
-    "nvim-treesitter/nvim-treesitter",
-  }
+    'nvim-lua/plenary.nvim',
+    'nvim-treesitter/nvim-treesitter',
+    'rcarriga/nvim-notify',
+    'norcalli/nvim-terminal.lua',
+  },
+  config = function()
+    require('user.plugins.tron')
+  end,
 }
 
---use {
-  --'pwntester/octo.nvim',
-  --requires = {
-    --'nvim-lua/plenary.nvim',
-    --'nvim-telescope/telescope.nvim',
-    --'kyazdani42/nvim-web-devicons',
-  --},
-  --config = function ()
-    --require('user.plugins.octo')
-  --end
---}
---
+use({
+    "kylechui/nvim-surround",
+    config = function()
+        require("nvim-surround").setup({
+            -- Configuration here, or leave empty to use defaults
+        })
+    end
+})
 
 -- ColorSchemes
 --use('EdenEast/nightfox.nvim')
---use('marko-cerovac/material.nvim')
-use('folke/tokyonight.nvim')
+use {
+  'marko-cerovac/material.nvim',
+  config = function()
+    require('user.plugins.material')
+  end,
+}
+use{
+  'folke/tokyonight.nvim',
+  config = function()
+    require('user.plugins.tokyonight')
+  end,
+}
+
 
 
 -- Automatically install plugins on first run

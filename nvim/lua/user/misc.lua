@@ -9,7 +9,7 @@ local test_current_file = function ()
   end
 end
 
-vim.keymap.set('n', '<Leader>tt', test_current_file, {})
+vim.keymap.set('n', '<Leader>to', test_current_file, {})
 
 -- prevent `wq` and `q` typos
 vim.cmd([[

@@ -8,7 +8,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.laststatus = 2
 vim.opt.title = true
-vim.opt.spell = true
+vim.opt.spell = false
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.wrap = true
@@ -24,4 +24,4 @@ vim.opt.shortmess:append({ I = true })  -- disable splash screen
 vim.opt.wildmode = 'longest:full,full'
 --vim.opt.signcolumn = 'yes:2'
 vim.opt.termguicolors = true
-vim.cmd('colorscheme tokyonight-night')
+--vim.cmd('colorscheme material')

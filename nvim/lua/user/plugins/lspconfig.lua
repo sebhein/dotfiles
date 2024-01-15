@@ -25,6 +25,8 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+
+  client.server_capabilities.hoverProvider = false
 end
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -80,6 +82,37 @@ require'lspconfig'.pylsp.setup{
     }
   }
 }
+
+
+-- some pretty bad performance issues with pyright, would love to use it though
+--require'lspconfig'.pyright.setup{
+  --on_attach = on_attach,
+  --capabilities = capabilities,
+  --root_dir = function()
+    --return vim.fn.getcwd()
+  --end,
+  --settings = {
+    --python = {
+      --analysis = {
+        --autoImportCompletion = false,
+        --autoSearchPaths = false,
+        --useLibraryCodeForTypes = false,
+        --diagnosticMode = "workspace",
+        --typeCheckingMode = "off",
+      --},
+    --},
+  --},
+--}
+
+--require('lspconfig').ruff_lsp.setup {
+  --on_attach = on_attach,
+  --init_options = {
+    --settings = {
+       ----Any extra CLI arguments for `ruff` go here.
+      --args = { '--line-length=120' },
+    --}
+  --}
+--}
 
 --require'lspconfig'.sumneko_lua.setup{
   --on_attach = on_attach,
