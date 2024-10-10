@@ -36,13 +36,23 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
   --capabilities = capabilities,
 --}
 
---require'lspconfig'.pyright.setup{
-  --on_attach = on_attach,
-  --capabilities = capabilities,
-  --root_dir = function()
-    --return vim.fn.getcwd()
-  --end,
---}
+require'lspconfig'.pyright.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = function()
+    return vim.fn.getcwd()
+  end,
+}
+
+require'lspconfig'.glint.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+require'lspconfig'.ember.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 
 --require'lspconfig'.pylyzer.setup{
   --on_attach = on_attach,
@@ -52,36 +62,36 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
   ----end,
 --}
 
-require'lspconfig'.pylsp.setup{
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = function()
-    return vim.fn.getcwd()
-  end,
-  settings = {
-    configurationSources = {'flake8'},
-    pylsp = {
-      plugins = {
-        pycodestyle = {
-          enabled = false
-        },
-        mccabe = {
-          enabled = false
-        },
-        pyflakes = {
-          enabled = false
-        },
-        flake8 = {
-          enabled = true
-        },
-        black = {
-          enabled = true,
-          line_length = 120,
-        },
-      }
-    }
-  }
-}
+--require'lspconfig'.pylsp.setup{
+  --on_attach = on_attach,
+  --capabilities = capabilities,
+  --root_dir = function()
+    --return vim.fn.getcwd()
+  --end,
+  --settings = {
+    --configurationSources = {'flake8'},
+    --pylsp = {
+      --plugins = {
+        --pycodestyle = {
+          --enabled = false
+        --},
+        --mccabe = {
+          --enabled = false
+        --},
+        --pyflakes = {
+          --enabled = false
+        --},
+        --flake8 = {
+          --enabled = true
+        --},
+        --black = {
+          --enabled = true,
+          --line_length = 120,
+        --},
+      --}
+    --}
+  --}
+--}
 
 
 -- some pretty bad performance issues with pyright, would love to use it though
@@ -120,6 +130,11 @@ require'lspconfig'.pylsp.setup{
 --}
 
 require'lspconfig'.rust_analyzer.setup{
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+require'lspconfig'.gopls.setup{
   on_attach = on_attach,
   capabilities = capabilities,
 }

@@ -19,9 +19,23 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
-vim.opt.clipboard = 'unnamedplus'
 vim.opt.shortmess:append({ I = true })  -- disable splash screen
 vim.opt.wildmode = 'longest:full,full'
 --vim.opt.signcolumn = 'yes:2'
 vim.opt.termguicolors = true
 --vim.cmd('colorscheme material')
+--
+vim.opt.clipboard = 'unnamedplus'
+vim.g.clipboard = {
+  name = 'WslClipboard',
+  copy = {
+    ["+"] = 'clip.exe',
+    ["*"] = 'clip.exe',
+  },
+  paste = {
+    ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  },
+  cache_enabled = false,
+}
+vim.opt.titlestring = [[%{v:progname} %f]]

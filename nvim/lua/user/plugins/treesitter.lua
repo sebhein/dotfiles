@@ -1,5 +1,5 @@
 require('nvim-treesitter.configs').setup({
-  ensure_installed = { "python", "lua", "rust", "html", "javascript", "json" },
+  ensure_installed = { "python", "lua", "rust", "html", "javascript", "json", "glimmer", "go" },
   highlight = {
     enable = true,
     disable = { 'NvimTree' },
